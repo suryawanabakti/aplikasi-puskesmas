@@ -14,29 +14,6 @@ export default function Show({ auth, user }) {
         });
     const [selectedImage, setSelectedImage] = useState();
 
-    const imageChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setSelectedImage(e.target.files[0]);
-        }
-    };
-
-    const handleSave = (e) => {
-        e.preventDefault();
-        patch(route("profile.update"), {
-            onSuccess: () => {
-                toast.success("Berhasil simpan profile");
-                reset();
-            },
-            onError: (err) => {
-                console.log(err);
-                toast.error("Gagal simpan profile");
-            },
-        });
-    };
-
-    const removeSelectedImage = () => {
-        setSelectedImage();
-    };
     return (
         <AuthenticatedLayout
             user={user}

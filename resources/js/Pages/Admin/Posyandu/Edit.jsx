@@ -20,12 +20,12 @@ export default function Edit({ auth, pasien }) {
 
         put(route("admin.master-data.posyandu.update", pasien.id), {
             onSuccess: () => {
-                toast.success("Berhasil tambah posyandu ");
+                toast.success("Berhasil ubah posyandu ");
                 reset();
             },
             onError: (err) => {
                 console.log(err);
-                toast.error("Gagal tambah posyandu  ");
+                toast.error("Gagal ubah posyandu  ");
             },
         });
     };

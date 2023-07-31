@@ -13,22 +13,24 @@ export default function Edit({ auth }) {
             email: auth.user.email,
             no_telepon: auth.user.no_telepon,
             alamat: auth.user.alamat,
+            images: "",
         });
 
     const [selectedImage, setSelectedImage] = useState();
 
     const imageChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
+            setData("images", e.target.files[0]);
             setSelectedImage(e.target.files[0]);
         }
     };
 
     const handleSave = (e) => {
         e.preventDefault();
-        patch(route("profile.update"), {
-            onSuccess: () => {
+        post(route("admin.users-management.update-profile"), {
+            onSuccess: (res) => {
+                console.log(res);
                 toast.success("Berhasil simpan profile");
-                reset();
             },
             onError: (err) => {
                 console.log(err);
@@ -65,11 +67,15 @@ export default function Edit({ auth }) {
 
                             <div className="card-body">
                                 <div className="d-flex align-items-start align-items-sm-center gap-4">
-                                    {selectedImage ? (
+                                    {auth.user?.image || selectedImage ? (
                                         <img
-                                            src={URL.createObjectURL(
+                                            src={
                                                 selectedImage
-                                            )}
+                                                    ? URL.createObjectURL(
+                                                          selectedImage
+                                                      )
+                                                    : `/storage/${auth.user?.image}`
+                                            }
                                             alt="user-avatar"
                                             className="d-block rounded"
                                             height="100"
@@ -78,7 +84,7 @@ export default function Edit({ auth }) {
                                         />
                                     ) : (
                                         <img
-                                            src="/assets/img/avatars/clemy.png"
+                                            src="/assets/img/avatars/1.png"
                                             alt="user-avatar"
                                             className="d-block rounded"
                                             height="100"
@@ -106,6 +112,7 @@ export default function Edit({ auth }) {
                                                 onChange={(e) => imageChange(e)}
                                             />
                                         </label>
+
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -123,6 +130,11 @@ export default function Edit({ auth }) {
                                             Allowed JPG, GIF or PNG. Max size of
                                             800K
                                         </p>
+                                        {errors.images && (
+                                            <small className="text-danger">
+                                                {errors.images}
+                                            </small>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -206,25 +218,23 @@ export default function Edit({ auth }) {
                                             >
                                                 Phone Number
                                             </label>
-                                            <div className="input-group input-group-merge">
-                                                <input
-                                                    type="text"
-                                                    id="phoneNumber"
-                                                    name="phoneNumber"
-                                                    value={data.no_telepon}
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "no_telepon",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    className="form-control"
-                                                    placeholder="202 555 0111"
-                                                />
-                                                <span className="text-danger">
-                                                    {errors.no_telepon}
-                                                </span>
-                                            </div>
+                                            <input
+                                                type="text"
+                                                id="phoneNumber"
+                                                name="phoneNumber"
+                                                value={data.no_telepon}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "no_telepon",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="form-control"
+                                                placeholder="202 555 0111"
+                                            />
+                                            <span className="text-danger">
+                                                {errors.no_telepon}
+                                            </span>
                                         </div>
                                         <div className="mb-3 col-md-6">
                                             <label
@@ -254,6 +264,7 @@ export default function Edit({ auth }) {
                                         <button
                                             type="button"
                                             onClick={handleSave}
+                                            disabled={processing}
                                             className="btn btn-primary me-2"
                                         >
                                             Save changes

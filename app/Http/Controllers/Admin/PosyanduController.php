@@ -48,23 +48,18 @@ class PosyanduController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'noRm' => 'required|unique:pasien,no_rm,' . $pasien->id,
+
             'alamat' => 'required',
             'noTelepon' => 'required',
-            'nik' => 'required|unique:pasien,nik,' . $pasien->id,
-            'jenisKelamin' => 'required'
         ]);
 
         $pasien->update([
-            'nik' => $request->nik,
             'nama' => $request->nama,
-            'no_rm' => $request->noRm,
             'alamat' => $request->alamat,
             'no_telepon' => $request->noTelepon,
-            'jenis_kelamin' => $request->jenisKelamin
         ]);
 
-        return redirect()->route('admin.master-data.pasien');
+        return redirect()->route('admin.master-data.posyandu');
     }
 
     public function show(Pasien $pasien)

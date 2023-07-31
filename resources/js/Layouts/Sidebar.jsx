@@ -62,19 +62,13 @@ export default function Sidebar({ user }) {
                             id: "drugs",
                             routeName: "admin.master-data.drugs",
                             link: "/admin/master-data/drugs",
-                            text: "Obat",
+                            text: "Stok Obat",
                         },
                         {
                             id: "suppliers",
                             routeName: "admin.master-data.suppliers",
                             link: "/admin/master-data/suppliers",
                             text: "Supplier",
-                        },
-                        {
-                            id: "golongan",
-                            routeName: "admin.master-data.golongan",
-                            link: "/admin/master-data/golongan",
-                            text: "Satuan",
                         },
                     ],
                 },
@@ -84,12 +78,12 @@ export default function Sidebar({ user }) {
                     icon: "bx bxs-wallet",
                     core: "transaction",
                     menuItems: [
-                        {
-                            id: "obatMasuk",
-                            routeName: "admin.transaction.drugs-in",
-                            link: "/admin/transaction/drugs-in",
-                            text: "Obat Masuk",
-                        },
+                        // {
+                        //     id: "obatMasuk",
+                        //     routeName: "admin.transaction.drugs-in",
+                        //     link: "/admin/transaction/drugs-in",
+                        //     text: "Obat Masuk",
+                        // },
                         {
                             id: "obatKeluar",
                             routeName: "admin.transaction.drugs-out",
@@ -98,11 +92,58 @@ export default function Sidebar({ user }) {
                         },
                     ],
                 },
+
+                {
+                    id: "Laporan",
+                    menuTitle: "Laporan",
+                    icon: "bx bxs-report",
+                    core: "laporan",
+                    menuItems: [
+                        {
+                            id: "obatMasuk",
+                            routeName: "admin.laporan.drugs-in",
+                            link: "/admin/laporandrugs-in",
+                            text: "Obat Masuk",
+                        },
+                        {
+                            id: "obatKeluar",
+                            routeName: "admin.laporan.drugs-out",
+                            link: "/admin/laporan-drugs-out",
+                            text: "Obat Keluar",
+                        },
+                        {
+                            id: "obatKadaluarsa",
+                            routeName: "admin.laporan.drugs-expired",
+                            link: "/admin/laporan-drugs-expired",
+                            text: "Obat Kadaluarsa",
+                        },
+                    ],
+                },
                 {
                     id: "usersManagement",
                     menuTitle: "Users Management",
                     icon: "bx bx-cog",
                     core: "admin.users-management",
+                },
+            ],
+        },
+        {
+            menuHeader: "Menu Dokter",
+            roles: ["super-admin", "dokter"],
+            menu: [
+                {
+                    id: "Transaksi",
+                    menuTitle: "Transaksi",
+                    icon: "bx bxs-wallet",
+                    core: "transaction",
+                    menuItems: [
+                        {
+                            id: "obatKeluar",
+                            routeName: "admin.transaction.drugs-out",
+                            link: "/admin/transaction/grugs-out",
+                            text: "Obat Keluar",
+                        },
+                    ],
                 },
             ],
         },

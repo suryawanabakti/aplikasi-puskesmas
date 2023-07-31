@@ -19,8 +19,7 @@ return new class extends Migration
             $table->integer('harga_jual');
             $table->integer('stok');
             $table->date('kadaluarsa');
-            $table->unsignedBigInteger('golongan_id');
-            $table->foreign('golongan_id')->references('id')->on('golongan')->cascadeOnDelete();
+            $table->enum('golongan', ['botol', 'ampul', 'tablet', 'tube']);
             $table->timestamps();
         });
     }

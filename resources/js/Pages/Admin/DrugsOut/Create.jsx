@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
 
-export default function Create({ auth, drugs, pasien }) {
+export default function Create({ auth, drugs, pasien, keranjang }) {
     const { flash } = usePage().props;
 
     const [totalStok, setTotalStok] = useState(0);
@@ -17,14 +17,14 @@ export default function Create({ auth, drugs, pasien }) {
         pasien: "",
         obat: "",
         tanggalKeluar: "",
-        jumlahKeluar: "",
+        jumlah: "",
         totalStok: totalStok,
     });
 
     const handleChangeJumlahKeluar = (e) => {
-        setData("jumlahKeluar", e.target.value);
-        let totalStok = parseInt(stok) - parseInt(e.target.value);
-        setTotalStok(totalStok);
+        setData("jumlah", e.target.value);
+        // let totalStok = parseInt(stok) - parseInt(e.target.value);
+        // setTotalStok(totalStok);
     };
 
     const handleOnChangeDrug = (drug) => {
@@ -42,6 +42,20 @@ export default function Create({ auth, drugs, pasien }) {
         //     const filteredOptions = res.data.filter((option) => option);
         // }, 2000);
     };
+
+    const handleAdd = () => {
+        post(route("admin.transaction.drugs-out.addkeranjang"), {
+            onSuccess: (res) => {
+                toast.success("berhasil tambah");
+            },
+            onError: (err) => {
+                console.log(err);
+                toast.error("error tambah");
+            },
+        });
+    };
+
+    console.log(keranjang);
 
     const submit = (e) => {
         e.preventDefault();
@@ -100,7 +114,7 @@ export default function Create({ auth, drugs, pasien }) {
                     <div className="col-md-12">
                         <div className="card">
                             <h5 className="card-header">
-                                Create A New Drug Out
+                                Tambah transaksi obat keluar
                             </h5>
                             <hr className="my-0" />
                             <div className="card-body">
@@ -124,7 +138,7 @@ export default function Create({ auth, drugs, pasien }) {
                                                 {errors.obat}
                                             </span>
                                         </div>
-                                        <div className="col-md-6 mb-3">
+                                        <div className="col-md-2 mb-3">
                                             <label
                                                 htmlFor=""
                                                 className="form-label"
@@ -138,29 +152,98 @@ export default function Create({ auth, drugs, pasien }) {
                                                 className="form-control"
                                             />
                                         </div>
-                                        <div className="col-md-6 mb-3">
+
+                                        <div className="col-md-2 mb-3">
                                             <label
                                                 htmlFor=""
                                                 className="form-label"
                                             >
-                                                Tanggal Keluar
+                                                Jumlah Keluar
                                             </label>
                                             <input
-                                                type="date"
-                                                value={data.tanggalKeluar}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "tanggalKeluar",
-                                                        e.target.value
-                                                    )
+                                                name="jumlahKeluar"
+                                                id="jumlahKeluar"
+                                                value={data.jumlahKeluar}
+                                                onChange={
+                                                    handleChangeJumlahKeluar
                                                 }
+                                                type="number"
                                                 className="form-control"
                                             />
                                             <span className="text-danger">
-                                                {errors.tanggalKeluar}
+                                                {errors.jumlah}
                                             </span>
                                         </div>
+                                        <div className="col-md-2 mt-4">
+                                            <button
+                                                className="btn btn-primary"
+                                                type="button"
+                                                onClick={() => handleAdd()}
+                                                disabled={processing}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                    <div className="row mb-5">
+                                        <div className="col-md-12">
+                                            <b>List Daftar Obat Keluar</b>
+                                            <table className="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Obat</th>
+                                                        <th>Jumlah</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {keranjang.map(
+                                                        (data, index) => {
+                                                            return (
+                                                                <tr key={index}>
+                                                                    <td>
+                                                                        {
+                                                                            data
+                                                                                .obat
+                                                                                .nama
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        {
+                                                                            data.jumlah
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="#">
+                                                                            <button
+                                                                                className="btn btn-danger btn-sm"
+                                                                                type="button"
+                                                                                onClick={(
+                                                                                    e
+                                                                                ) =>
+                                                                                    get(
+                                                                                        route(
+                                                                                            "admin.transaction.drugs-out.deletekeranjang",
+                                                                                            data.id
+                                                                                        )
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <i className="bx bx-trash"></i>
+                                                                            </button>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        }
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
 
+                                    <div className="row">
                                         <div className="col-md-6 mb-3">
                                             <label
                                                 htmlFor=""
@@ -186,41 +269,27 @@ export default function Create({ auth, drugs, pasien }) {
                                                 {errors.pasien}
                                             </span>
                                         </div>
-
                                         <div className="col-md-6 mb-3">
                                             <label
                                                 htmlFor=""
                                                 className="form-label"
                                             >
-                                                Jumlah Keluar
+                                                Tanggal Keluar
                                             </label>
                                             <input
-                                                name="jumlahKeluar"
-                                                id="jumlahKeluar"
-                                                value={data.jumlahKeluar}
-                                                onChange={
-                                                    handleChangeJumlahKeluar
+                                                type="date"
+                                                value={data.tanggalKeluar}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "tanggalKeluar",
+                                                        e.target.value
+                                                    )
                                                 }
-                                                type="number"
                                                 className="form-control"
                                             />
                                             <span className="text-danger">
-                                                {errors.jumlahKeluar}
+                                                {errors.tanggalKeluar}
                                             </span>
-                                        </div>
-                                        <div className="col-md-6 mb-3">
-                                            <label
-                                                htmlFor=""
-                                                className="form-label"
-                                            >
-                                                Total Stok
-                                            </label>
-                                            <input
-                                                value={totalStok}
-                                                readOnly
-                                                type="text"
-                                                className="form-control"
-                                            />
                                         </div>
                                     </div>
                                     <button
@@ -233,6 +302,9 @@ export default function Create({ auth, drugs, pasien }) {
                                 </form>
                             </div>
                         </div>
+                    </div>
+                    <div className="col-md-12">
+                        <div className="row"></div>
                     </div>
                 </div>
             </div>

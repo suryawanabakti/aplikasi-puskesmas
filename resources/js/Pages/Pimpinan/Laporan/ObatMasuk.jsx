@@ -70,19 +70,22 @@ export default function Index({
                                         >
                                             Filter
                                         </Button>
-                                        <a
-                                            href={route(
-                                                "pimpinan.laporan.drugs-in.export",
-                                                {
-                                                    mulai: mulai,
-                                                    sampai: sampai,
-                                                }
-                                            )}
-                                            target="_blank"
-                                            className="btn btn-primary btn-sm"
-                                        >
-                                            Export
-                                        </a>
+                                        {auth.user.roles[0].name !==
+                                            "pimpinan" && (
+                                            <a
+                                                href={route(
+                                                    "pimpinan.laporan.drugs-in.export",
+                                                    {
+                                                        mulai: mulai,
+                                                        sampai: sampai,
+                                                    }
+                                                )}
+                                                target="_blank"
+                                                className="btn btn-primary btn-sm"
+                                            >
+                                                Export
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -122,6 +125,7 @@ export default function Index({
                                         <th>Nama Obat</th>
                                         <th>Jumlah</th>
                                         <th>Satuan</th>
+                                        <th>Expired at</th>
                                     </tr>
                                 </thead>
                                 <tbody className="table-border-bottom-0">
@@ -134,6 +138,7 @@ export default function Index({
                                                 <td>{data.nama}</td>
                                                 <td>{data.jumlah_masuk}</td>
                                                 <td>{data.golongan}</td>
+                                                <td>{data.expired_at}</td>
                                             </tr>
                                         );
                                     })}

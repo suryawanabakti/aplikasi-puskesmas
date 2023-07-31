@@ -15,7 +15,7 @@ export default function Show({ auth, golongan, drug }) {
         hargaJual: drug.harga_jual,
         kadaluarsa: drug.kadaluarsa,
         satuan: "",
-        golonganId: drug.golongan_id,
+        golongan: drug.golongan,
         kode: drug.kode,
     });
 
@@ -140,30 +140,14 @@ export default function Show({ auth, golongan, drug }) {
                                                 htmlFor="Golongan"
                                                 className="form-label"
                                             >
-                                                Golongan
+                                                Golongan {drug.golongan}
                                             </label>
-                                            <select
-                                                defaultValue={data.golonganId}
-                                                name="golonganId"
-                                                disabled
-                                                id="golonganId"
-                                                onChange={handleOnChange}
+                                            <input
+                                                type="text"
+                                                readOnly
                                                 className="form-control"
-                                            >
-                                                <option value="">
-                                                    Pilih Golongan
-                                                </option>
-                                                {golongan.map((data, index) => {
-                                                    return (
-                                                        <option
-                                                            key={index}
-                                                            value={data.id}
-                                                        >
-                                                            {data.nama}
-                                                        </option>
-                                                    );
-                                                })}
-                                            </select>
+                                                value={data.golongan}
+                                            />
                                             <span className="text-danger">
                                                 {errors.golongan}
                                             </span>

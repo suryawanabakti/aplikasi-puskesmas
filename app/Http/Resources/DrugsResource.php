@@ -17,6 +17,7 @@ class DrugsResource extends JsonResource
     public function toArray(Request $request): array
     {
         $obatMasuk = ObatMasuk::where('obat_id', $this->id)->orderBy('created_at', 'desc')->first();
+
         !empty($obatMasuk) ? $expired30Days = $obatMasuk->tanggal_kadaluarsa <= Carbon::now()->addDay(30)->format('Y-m-d') : $expired30Days = $this->kadaluarsa <= Carbon::now()->addDay(30)->format('Y-m-d');
 
         return [
@@ -26,7 +27,7 @@ class DrugsResource extends JsonResource
             'harga_jual' =>  $this->harga_jual,
             'kode' => $this->kode,
             'nama' => $this->nama,
-            'golongan' => $this->golongan->nama,
+            'golongan' =>  ucfirst($this->golongan),
             "stok" => $this->stok,
             "expired_at" => !empty($obatMasuk) ? $obatMasuk->tanggal_kadaluarsa : $this->kadaluarsa,
             '30Terakhir' => Carbon::now()->addDay(30)->format('Y-m-d'),

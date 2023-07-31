@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +15,8 @@ class DrugsInResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $expired30Days = $this->tanggal_kadaluarsa <= Carbon::now()->addDay(30);
+
         return [
             "id" => $this->id,
             "invoice" => $this->invoice,
@@ -21,7 +24,9 @@ class DrugsInResource extends JsonResource
             "kode" => $this->obat->kode,
             "nama" => $this->obat->nama,
             "jumlah_masuk" => $this->jumlah_masuk,
-            "golongan" => $this->obat->golongan->nama,
+            "golongan" => $this->obat->golongan,
+            'expired_at' => $this->tanggal_kadaluarsa,
+            'kadaluarsa30HariLagi' => $expired30Days,
         ];
     }
 }

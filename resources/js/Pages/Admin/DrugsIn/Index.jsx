@@ -8,6 +8,7 @@ import Pagination from "react-js-pagination";
 export default function Index({
     auth,
     drugsIn,
+    today,
     pageNumber = 1,
     paginate = 5,
     mulaiFilter,
@@ -63,12 +64,12 @@ export default function Index({
                                     <div className="col-sm-4">
                                         <Link
                                             href={route(
-                                                "admin.transaction.drugs-in.create"
+                                                "admin.master-data.drugs-in.create"
                                             )}
                                             className="btn btn-primary btn-sm"
                                         >
                                             <i className="bx bx-capsule"></i>{" "}
-                                            Add Drugs In
+                                            Tambah Obat Masuk
                                         </Link>
                                     </div>
                                 </div>
@@ -109,6 +110,8 @@ export default function Index({
                                         <th>Nama Obat</th>
                                         <th>Jumlah</th>
                                         <th>Satuan</th>
+                                        <th>Status</th>
+                                        <th>Expired At</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -122,6 +125,24 @@ export default function Index({
                                                 <td>{data.nama}</td>
                                                 <td>{data.jumlah_masuk}</td>
                                                 <td>{data.golongan}</td>
+                                                <td>
+                                                    {today >=
+                                                    data.expired_at ? (
+                                                        <span className="badge bg-danger">
+                                                            EXPIRED
+                                                        </span>
+                                                    ) : data.kadaluarsa30HariLagi ? (
+                                                        <span className="badge bg-warning">
+                                                            {"< "}1 BLN EXPIRED
+                                                        </span>
+                                                    ) : (
+                                                        <span className="badge bg-success">
+                                                            BELUM EXPIRED
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td>{data.expired_at}</td>
+
                                                 <td>
                                                     <Dropdown>
                                                         <Dropdown.Toggle

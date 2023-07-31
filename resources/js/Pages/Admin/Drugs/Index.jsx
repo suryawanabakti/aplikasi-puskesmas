@@ -11,6 +11,7 @@ export default function Index({
     paginate,
     pageNumber,
     term,
+    drugsIn,
     today,
 }) {
     const { get, delete: destroy } = useForm();
@@ -76,15 +77,24 @@ export default function Index({
                         <div className="row">
                             <div className="col-md-7">
                                 <div className="row">
-                                    <div className="col-sm-3">
+                                    <div className="col-sm-12">
                                         <Link
                                             href={route(
                                                 "admin.master-data.drugs.create"
                                             )}
+                                            className="btn btn-primary btn-sm me-2"
+                                        >
+                                            <i className="bx bx-capsule"></i>{" "}
+                                            Tambah Obat
+                                        </Link>
+                                        <Link
+                                            href={route(
+                                                "admin.master-data.drugs-in"
+                                            )}
                                             className="btn btn-primary btn-sm"
                                         >
                                             <i className="bx bx-capsule"></i>{" "}
-                                            Add Drug
+                                            Obat Masuk
                                         </Link>
                                     </div>
                                 </div>
@@ -123,7 +133,7 @@ export default function Index({
                                         <th>Harga Beli</th>
                                         <th>Harga Jual</th>
                                         <th>Stok</th>
-                                        <th>Satuan</th>
+                                        <th>Golongan</th>
                                         <th>Expired at</th>
                                         <th>Status </th>
                                         <th>Actions</th>

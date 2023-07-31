@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $data = User::with('roles')->role(['apoteker', 'pimpinan'])->orderBy('last_seen', 'desc');
+        $data = User::with('roles')->role(['apoteker', 'pimpinan', 'dokter'])->orderBy('last_seen', 'desc');
 
         if ($request->term) {
             $data->where('name', 'LIKE', "%{$request->term}%");
@@ -35,6 +35,41 @@ class UserController extends Controller
             'term' => $request->term ?? '',
             'filterPositions' => $request->filterPosition ?? '',
         ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => ['string', 'max:255'],
+            'alamat' => ['max:255'],
+            'no_telepon' => ['nullable', 'numeric'],
+            'images' => ['nullable', 'image', 'mimes:jpg,png,jpeg'],
+            'email' => ['email', 'max:255', 'unique:users,email,' . auth()->id()],
+        ]);
+        $data  = [
+            'name' => $request->name,
+            'alamat' => $request->alamat,
+            'no_telepon' => $request->no_telepon,
+
+            'email' => $request->email
+        ];
+        if ($request->images) {
+            $image = $request->file('images')->store('images');
+            $data['image'] = $image;
+        }
+
+        User::where('id', auth()->id())->update($data);
+
+        return back();
+    }
+
+    public function reset(User $user)
+    {
+        $user->update([
+            'password' => bcrypt('qwerty123')
+        ]);
+
+        return back();
     }
 
     public function store(Request $request)
@@ -57,6 +92,29 @@ class UserController extends Controller
             'last_seen' => Carbon::now()
         ]);
 
+
+        $user->assignRole($request->position);
+
+
+        return Redirect::to('/admin/users-management');
+    }
+    public function update(User $user, Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'position' => 'required|string|max:255',
+            'alamat' => 'string|max:255',
+            'no_telepon' => 'numeric|max:15',
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'alamat' => $request->alamat ?? null,
+            'no_telepon' => $request->noTelepon ?? null,
+            'last_seen' => Carbon::now()
+        ]);
 
         $user->assignRole($request->position);
 

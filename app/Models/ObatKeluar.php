@@ -12,7 +12,10 @@ class ObatKeluar extends Model
     public $table = "obat_keluar";
 
     protected $guarded = ['id'];
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function obat()
     {
         return $this->belongsTo(Obat::class, 'obat_id', 'id');

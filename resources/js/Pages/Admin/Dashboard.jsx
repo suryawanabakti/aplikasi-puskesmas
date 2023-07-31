@@ -115,42 +115,6 @@ export default function Dashboard({
                             </div>
                         </div>
                     </div>
-                    <div className="col-lg-6 mb-4 order-0">
-                        <div className="card">
-                            <div className="d-flex align-items-end row">
-                                <div className="col-sm-12">
-                                    <div className="card-body">
-                                        <h5 className="card-title text-primary">
-                                            Selamat Datang {auth.user.name}! 🎉
-                                        </h5>
-                                        <p className="mb-4">
-                                            Lorem ipsum dolor sit amet
-                                            consectetur adipisicing elit.
-                                            Consequuntur, vel?
-                                        </p>
-                                        <a
-                                            href="#"
-                                            className="btn btn-sm btn-outline-primary"
-                                        >
-                                            Terima kasih.
-                                        </a>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6 float-end"></div>
-                                <div className="col-sm-6 float-end">
-                                    <div className="card-body pb-0 px-md-4">
-                                        <img
-                                            src="/assets/img/illustrations/man-with-laptop-light.png"
-                                            height={140}
-                                            alt="View Badge User"
-                                            data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                                            data-app-light-img="illustrations/man-with-laptop-light.png"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

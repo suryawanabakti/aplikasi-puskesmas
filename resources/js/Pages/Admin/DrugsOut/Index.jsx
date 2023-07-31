@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
-import { Dropdown, Offcanvas } from "react-bootstrap";
+import { Dropdown, Nav, Offcanvas } from "react-bootstrap";
 import { toast } from "react-hot-toast";
 import { Alert } from "react-bootstrap";
 
@@ -37,7 +37,7 @@ export default function Index({ auth, drugsOut }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Drugs Out
+                    Obat Keluar
                 </h2>
             }
         >
@@ -45,7 +45,7 @@ export default function Index({ auth, drugsOut }) {
             <div className="container-xxl flex-grow-1 container-p-y">
                 <h4 className="fw-bold py-2 mb-2">
                     <span className="text-muted fw-light">Transactions / </span>
-                    Drugs Out
+                    Obat Keluar
                 </h4>
                 {flash.type == "success" && (
                     <Alert key={"success"} variant={"success"} dismissible>
@@ -54,6 +54,27 @@ export default function Index({ auth, drugsOut }) {
                 )}
 
                 <div className="card">
+                    <Nav
+                        variant="tabs"
+                        defaultActiveKey="/admin/transaction/drugs-out"
+                    >
+                        <Nav.Item>
+                            <Nav.Link
+                                as={Link}
+                                href="/admin/transaction/drugs-out"
+                            >
+                                Admin
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link
+                                as={Link}
+                                href="/admin/transaction/drugs-out/dokter"
+                            >
+                                Dokter
+                            </Nav.Link>
+                        </Nav.Item>
+                    </Nav>
                     <div className="card-header">
                         <div className="row">
                             <div className="col-md-7">
@@ -66,7 +87,7 @@ export default function Index({ auth, drugsOut }) {
                                             className="btn btn-primary btn-sm"
                                         >
                                             <i class="bx bx-capsule"></i> Add
-                                            Drug Out
+                                            Obat Keluar
                                         </Link>
                                     </div>
                                 </div>

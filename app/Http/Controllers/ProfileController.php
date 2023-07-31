@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
+
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,15 +30,28 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request)
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        $request->validate([
+            'name' => ['string', 'max:255'],
+            'alamat' => ['max:255'],
+            'no_telepon' => ['nullable', 'numeric'],
+            'images' => ['required', 'image', 'mimes:jpg,png,jpeg'],
+            'email' => ['email', 'max:255', 'unique:users,email,' . auth()->id()],
+        ]);
 
-        $request->user()->save();
+        $image = $request->file('image')->store('image');
+
+        User::where('id', auth()->id())->update([
+            'name' => $request->name,
+            'alamat' => $request->alamat,
+            'no_telepon' => $request->no_telepon,
+            'image' => $image ?? null,
+            'email' => $request->email
+        ]);
+
+        return back();
     }
 
     /**

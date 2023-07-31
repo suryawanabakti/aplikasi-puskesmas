@@ -9,6 +9,7 @@ use App\Http\Resources\SupplierResource;
 use App\Models\Obat;
 use App\Models\ObatMasuk;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -33,6 +34,7 @@ class DrugInController extends Controller
             "mulaiFilter" => $request->mulai ?? null,
             'term' => $request->term ?? null,
             "sampaiFilter" => $request->sampai ?? null,
+            'today' => Carbon::now()->format('Y-m-d')
         ]);
     }
 

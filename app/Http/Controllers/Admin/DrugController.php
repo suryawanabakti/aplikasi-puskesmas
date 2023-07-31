@@ -26,7 +26,16 @@ class DrugController extends Controller
                 ->orWhere('kode', 'LIKE', "%{$request->term}%");
         }
 
+        $drugsIn = ObatMasuk::with('obat', 'obat.golongan')->orderBy('created_at', 'desc');
+        if ($request->term) {
+            $drugsIn->where('invoice', 'LIKE', "%{$request->term}%");
+        }
+        if ($request->mulai && $request->sampai) {
+            $drugsIn->whereBetween('tanggal_masuk', [$request->mulai, $request->sampai]);
+        }
+
         return Inertia::render('Admin/Drugs/Index', [
+
             "drugs" =>  DrugsResource::collection($drugs->paginate($request->paginate ?? 5)),
             'term' => $request->term ?? null,
             'pageNumber' => $request->pageNumber ?? 1,
@@ -39,7 +48,6 @@ class DrugController extends Controller
     {
 
         return Inertia::render('Admin/Drugs/Show', [
-            "golongan" => Golongan::orderBy('nama', 'asc')->get(),
             "drug" => $obat
         ]);
     }
@@ -48,16 +56,14 @@ class DrugController extends Controller
     {
 
         return Inertia::render('Admin/Drugs/Edit', [
-            "golongan" => Golongan::orderBy('nama', 'asc')->get(),
+
             "drug" => $obat
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('Admin/Drugs/Create', [
-            "golongan" => Golongan::orderBy('nama', 'asc')->get()
-        ]);
+        return Inertia::render('Admin/Drugs/Create');
     }
 
     public function destroy($obat)
@@ -76,7 +82,7 @@ class DrugController extends Controller
             'hargaBeli' => 'required|numeric',
             'hargaJual' => 'required|numeric',
             'kadaluarsa' => 'required|date',
-            'golonganId' => 'required',
+            'golongan' => 'required',
         ]);
 
         $obat->update([
@@ -85,7 +91,7 @@ class DrugController extends Controller
             'kode' => $request->kode,
             'harga_jual' => $request->hargaJual,
             'harga_beli' => $request->hargaBeli,
-            'golongan_id' => $request->golonganId,
+            'golongan' => $request->golongan,
             'kadaluarsa' => $request->kadaluarsa
         ]);
 
@@ -101,7 +107,7 @@ class DrugController extends Controller
             'hargaBeli' => 'required|numeric',
             'hargaJual' => 'required|numeric',
             'kadaluarsa' => 'required|date',
-            'golonganId' => 'required',
+            'golongan' => 'required',
         ]);
 
         $obat = Obat::create([
@@ -110,7 +116,7 @@ class DrugController extends Controller
             'kode' => $request->kode,
             'harga_jual' => $request->hargaJual,
             'harga_beli' => $request->hargaBeli,
-            'golongan_id' => $request->golonganId,
+            'golongan' => $request->golongan,
             'kadaluarsa' => $request->kadaluarsa
         ]);
 

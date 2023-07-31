@@ -168,12 +168,6 @@ export default function Login({ status, canResetPassword }) {
                                     </button>
                                 </div>
                             </form>
-                            <p className="text-center">
-                                <span>New on our platform? </span>
-                                <a href="#">
-                                    <span>Download buku panduan</span>
-                                </a>
-                            </p>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,8 @@
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
+import axios from "axios";
 import React, { useState } from "react";
+import { useEffect } from "react";
 
 export default function Topbar({
     user,
@@ -13,6 +15,15 @@ export default function Topbar({
             .getElementById("bodyContainer")
             .classList.add("layout-menu-expanded");
     };
+    const [count30Hari, setCount30Hari] = useState(0);
+    const countObatKadaluarsa30hari = async () => {
+        const res = await axios.get("/admin/notifikasi/obat-kadaluarsa/count");
+        setCount30Hari(res.data);
+    };
+
+    useEffect(() => {
+        countObatKadaluarsa30hari();
+    }, []);
 
     return (
         <nav
@@ -60,11 +71,19 @@ export default function Topbar({
                             data-bs-toggle="dropdown"
                         >
                             <div className="avatar avatar-online">
-                                <img
-                                    src="/assets/img/avatars/clemy.png"
-                                    alt=""
-                                    className="w-px-40 h-auto rounded-circle"
-                                />
+                                {user.image ? (
+                                    <img
+                                        src={`/storage/${user.image}`}
+                                        alt=""
+                                        className="w-px-40 rounded rounded-circle overflow-hidden"
+                                    />
+                                ) : (
+                                    <img
+                                        src="/assets/img/avatars/clemy.png"
+                                        alt=""
+                                        className="w-px-40 h-auto rounded-circle"
+                                    />
+                                )}
                             </div>
                         </a>
                         <ul
@@ -78,11 +97,19 @@ export default function Topbar({
                                     <div className="d-flex">
                                         <div className="flex-shrink-0 me-3">
                                             <div className="avatar avatar-online">
-                                                <img
-                                                    src="/assets/img/avatars/clemy.png"
-                                                    alt=""
-                                                    className="w-px-40 h-auto rounded-circle"
-                                                />
+                                                {user.image ? (
+                                                    <img
+                                                        src={`/storage/${user.image}`}
+                                                        alt=""
+                                                        className="w-px-40  rounded-circle"
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src="/assets/img/avatars/clemy.png"
+                                                        alt=""
+                                                        className="w-px-40 h-auto rounded-circle"
+                                                    />
+                                                )}
                                             </div>
                                         </div>
                                         <div className="flex-grow-1">
@@ -107,26 +134,24 @@ export default function Topbar({
                                     </span>
                                 </Link>
                             </li>
+
                             <li>
-                                <a className="dropdown-item" href="#">
-                                    <i className="bx bx-cog me-2" />
-                                    <span className="align-middle">
-                                        Settings
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
+                                <Link
+                                    className="dropdown-item"
+                                    href={route(
+                                        "admin.notifikasi.obat-kadaluarsa"
+                                    )}
+                                >
                                     <span className="d-flex align-items-center align-middle">
                                         <i className="flex-shrink-0 bx bx-bell me-2" />
                                         <span className="flex-grow-1 align-middle">
                                             Notification
                                         </span>
                                         <span className="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">
-                                            4
+                                            {count30Hari}
                                         </span>
                                     </span>
-                                </a>
+                                </Link>
                             </li>
                             <li>
                                 <div className="dropdown-divider" />

@@ -12,7 +12,7 @@ export default function Edit({ auth, golongan, drug }) {
         hargaJual: drug.harga_jual,
         kadaluarsa: drug.kadaluarsa,
         satuan: "",
-        golonganId: drug.golongan_id,
+        golongan: drug.golongan,
         kode: drug.kode,
     });
 
@@ -157,25 +157,30 @@ export default function Edit({ auth, golongan, drug }) {
                                                 Golongan
                                             </label>
                                             <select
-                                                defaultValue={data.golonganId}
-                                                name="golonganId"
-                                                id="golonganId"
+                                                defaultValue={drug.golongan}
+                                                name="golongan"
+                                                id="golongan"
                                                 onChange={handleOnChange}
                                                 className="form-control"
                                             >
                                                 <option value="">
                                                     Pilih Golongan
                                                 </option>
-                                                {golongan.map((data, index) => {
-                                                    return (
-                                                        <option
-                                                            key={index}
-                                                            value={data.id}
-                                                        >
-                                                            {data.nama}
-                                                        </option>
-                                                    );
-                                                })}
+                                                <option value="">
+                                                    Pilih Golongan
+                                                </option>
+                                                <option value="botol">
+                                                    Botol
+                                                </option>
+                                                <option value="ampul">
+                                                    Ampul
+                                                </option>
+                                                <option value="tablet">
+                                                    Tablet
+                                                </option>
+                                                <option value="tube">
+                                                    Tube
+                                                </option>
                                             </select>
                                             <span className="text-danger">
                                                 {errors.golongan}
@@ -243,7 +248,7 @@ export default function Edit({ auth, golongan, drug }) {
                                             </label>
                                             <div className="input-group input-group-merge">
                                                 <span className="input-group-text">
-                                                    <i class="bx bxs-capsule"></i>
+                                                    <i className="bx bxs-capsule"></i>
                                                 </span>
                                                 <input
                                                     type="number"

@@ -66,19 +66,22 @@ export default function ObatKadaluarsa({
                             <div className="col-md-7">
                                 <div className="row">
                                     <div className="col-sm-3 d-flex justify-between">
-                                        <a
-                                            href={route(
-                                                "pimpinan.laporan.drugs-expired.export",
-                                                {
-                                                    mulai: mulai,
-                                                    sampai: sampai,
-                                                }
-                                            )}
-                                            target="_blank"
-                                            className="btn btn-primary btn-sm"
-                                        >
-                                            Export
-                                        </a>
+                                        {auth.user.roles[0].name !==
+                                            "pimpinan" && (
+                                            <a
+                                                href={route(
+                                                    "pimpinan.laporan.drugs-expired.export",
+                                                    {
+                                                        mulai: mulai,
+                                                        sampai: sampai,
+                                                    }
+                                                )}
+                                                target="_blank"
+                                                className="btn btn-primary btn-sm"
+                                            >
+                                                Export
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             </div>

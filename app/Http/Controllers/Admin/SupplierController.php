@@ -21,6 +21,7 @@ class SupplierController extends Controller
         ]);
     }
 
+
     public function show(Supplier $supplier)
     {
         return Inertia::render('Admin/Suppliers/Show', [

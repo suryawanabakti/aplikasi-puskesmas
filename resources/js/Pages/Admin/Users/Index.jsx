@@ -26,7 +26,7 @@ export default function Index({
     const handleCloseFilter = () => setShowModal(false);
     const handleShowFilter = () => setShowModal(true);
 
-    const { get, delete: destroy } = useForm();
+    const { get, delete: destroy, patch } = useForm();
 
     const [name, setName] = useState("");
     const [uuid, setUuid] = useState("");
@@ -78,6 +78,15 @@ export default function Index({
             );
         }
     };
+
+    const handleReset = (uuid) => {
+        patch(route("admin.users-management.reset", uuid), {
+            onSuccess: (res) => {
+                toast.success("Berhasil reset password: qwerty123");
+            },
+        });
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -252,6 +261,16 @@ export default function Index({
                                                         >
                                                             <i className="bx bx-edit-alt"></i>{" "}
                                                             Edit
+                                                        </Dropdown.Item>
+                                                        <Dropdown.Item
+                                                            onClick={() =>
+                                                                handleReset(
+                                                                    user.uuid
+                                                                )
+                                                            }
+                                                        >
+                                                            <i className="bx bx-key me-1"></i>
+                                                            Reset Password
                                                         </Dropdown.Item>
 
                                                         <Dropdown.Item

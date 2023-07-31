@@ -20,7 +20,6 @@ export default function Create({ auth, golongan }) {
 
     const handleSave = (e) => {
         e.preventDefault();
-
         post(route("admin.master-data.drugs.store"), {
             onSuccess: () => {
                 toast.success("Berhasil tambah obat");
@@ -155,25 +154,27 @@ export default function Create({ auth, golongan }) {
                                                 Golongan
                                             </label>
                                             <select
-                                                name="golonganId"
-                                                id="golonganId"
-                                                value={data.golonganId}
+                                                name="golongan"
+                                                id="golongan"
+                                                value={data.golongan}
                                                 onChange={handleOnChange}
                                                 className="form-control"
                                             >
                                                 <option value="">
                                                     Pilih Golongan
                                                 </option>
-                                                {golongan.map((data, index) => {
-                                                    return (
-                                                        <option
-                                                            key={index}
-                                                            value={data.id}
-                                                        >
-                                                            {data.nama}
-                                                        </option>
-                                                    );
-                                                })}
+                                                <option value="Botol">
+                                                    Botol
+                                                </option>
+                                                <option value="Ampul">
+                                                    Ampul
+                                                </option>
+                                                <option value="Tablet">
+                                                    Tablet
+                                                </option>
+                                                <option value="Tube">
+                                                    Tube
+                                                </option>
                                             </select>
                                             <span className="text-danger">
                                                 {errors.golongan}

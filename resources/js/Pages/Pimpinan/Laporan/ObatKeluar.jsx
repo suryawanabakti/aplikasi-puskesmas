@@ -75,19 +75,22 @@ export default function Index({
                                         >
                                             Filter
                                         </Button>
-                                        <a
-                                            href={route(
-                                                "pimpinan.laporan.drugs-out.export",
-                                                {
-                                                    mulai: mulai,
-                                                    sampai: sampai,
-                                                }
-                                            )}
-                                            target="_blank"
-                                            className="btn btn-primary btn-sm"
-                                        >
-                                            Export
-                                        </a>
+                                        {auth.user.roles[0].name !==
+                                            "pimpinan" && (
+                                            <a
+                                                href={route(
+                                                    "pimpinan.laporan.drugs-out.export",
+                                                    {
+                                                        mulai: mulai,
+                                                        sampai: sampai,
+                                                    }
+                                                )}
+                                                target="_blank"
+                                                className="btn btn-primary btn-sm"
+                                            >
+                                                Export
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             </div>

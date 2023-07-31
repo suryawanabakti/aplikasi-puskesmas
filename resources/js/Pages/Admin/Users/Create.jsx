@@ -221,14 +221,14 @@ export default function Create({ auth }) {
                                                 <option value="">
                                                     Select Position
                                                 </option>
-                                                <option value="apoteker">
-                                                    Apoteker
-                                                </option>
                                                 <option value="admin">
                                                     Admin
                                                 </option>
                                                 <option value="pimpinan">
                                                     Pimpinan
+                                                </option>
+                                                <option value="dokter">
+                                                    Dokter
                                                 </option>
                                             </select>
                                         </div>
