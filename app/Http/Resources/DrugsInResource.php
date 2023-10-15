@@ -24,6 +24,7 @@ class DrugsInResource extends JsonResource
             "kode" => $this->obat->kode,
             "nama" => $this->obat->nama,
             "jumlah_masuk" => $this->jumlah_masuk,
+            "sisa" => $this->sisa,
             "golongan" => $this->obat->golongan,
             'expired_at' => $this->tanggal_kadaluarsa,
             'kadaluarsa30HariLagi' => $expired30Days,

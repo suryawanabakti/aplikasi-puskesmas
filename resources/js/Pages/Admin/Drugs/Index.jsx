@@ -141,8 +141,30 @@ export default function Index({
                                 </thead>
                                 <tbody className="table-border-bottom-0">
                                     {drugs.data.map((data) => {
+                                        {
+                                            today >= data.expired_at ? (
+                                                <span className="badge bg-danger">
+                                                    EXPIRED
+                                                </span>
+                                            ) : data.kadaluarsa30HariLagi ? (
+                                                <span className="badge bg-warning">
+                                                    {"< "}1 BLN EXPIRED
+                                                </span>
+                                            ) : (
+                                                <span className="badge bg-success">
+                                                    BELUM EXPIRED
+                                                </span>
+                                            );
+                                        }
                                         return (
-                                            <tr key={data.id}>
+                                            <tr
+                                                key={data.id}
+                                                hidden={
+                                                    today >= data.expired_at
+                                                        ? true
+                                                        : false
+                                                }
+                                            >
                                                 <td>
                                                     <Link
                                                         href={route(

@@ -20,7 +20,7 @@ class DrugsOutResource extends JsonResource
             "tanggal_keluar" => $this->tanggal_keluar,
             "kode" => $this->obat->kode,
             "nama_obat" => $this->obat->nama,
-            "nama_pasien" => $this->pasien->nama,
+            "nama_pasien" => $this->pasien?->nama ?? $this->nama_pasien,
             "jumlah_keluar" => $this->jumlah_keluar,
             "golongan" => $this->obat->golongan,
         ];

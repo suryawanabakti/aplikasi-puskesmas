@@ -12,6 +12,7 @@ class ObatKeluar extends Model
     public $table = "obat_keluar";
 
     protected $guarded = ['id'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -19,6 +20,10 @@ class ObatKeluar extends Model
     public function obat()
     {
         return $this->belongsTo(Obat::class, 'obat_id', 'id');
+    }
+    public function keranjang()
+    {
+        return $this->hasMany(Keranjang::class, 'obat_keluar_id', 'id');
     }
 
     public function pasien()

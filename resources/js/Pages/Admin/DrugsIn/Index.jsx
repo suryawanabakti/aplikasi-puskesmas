@@ -109,6 +109,7 @@ export default function Index({
                                         <th>Kode Obat</th>
                                         <th>Nama Obat</th>
                                         <th>Jumlah</th>
+                                        <th>Sisa</th>
                                         <th>Satuan</th>
                                         <th>Status</th>
                                         <th>Expired At</th>
@@ -124,6 +125,7 @@ export default function Index({
                                                 <td>{data.kode}</td>
                                                 <td>{data.nama}</td>
                                                 <td>{data.jumlah_masuk}</td>
+                                                <td>{data.sisa}</td>
                                                 <td>{data.golongan}</td>
                                                 <td>
                                                     {today >=

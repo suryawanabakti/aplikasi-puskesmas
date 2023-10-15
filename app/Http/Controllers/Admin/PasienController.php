@@ -14,7 +14,7 @@ class PasienController extends Controller
     public function index(Request $request)
     {
 
-        $pasien = Pasien::orderBy('created_at', 'desc');
+        $pasien = Pasien::orderBy('created_at', 'desc')->whereNotNull('no_rm');
 
         if ($request->term) {
             $pasien->where('nama', 'LIKE', "%{$request->term}%")

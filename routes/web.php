@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\NotifikasiObatKadaluarsa;
+use App\Http\Controllers\PasienUmumController;
 use App\Http\Controllers\Pimpinan\LaporanController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Obat;
@@ -71,6 +72,15 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/users-management/{user}/reset', [UserController::class, 'reset'])->name('admin.users-management.reset');
         Route::get('/admin/users-management/edit/{user}', [UserController::class, 'edit'])->name('admin.users-management.edit');
 
+        Route::get('/admin/master-data/pasien-umum', [PasienUmumController::class, 'index'])->name('admin.master-data.pasien-umum');
+        Route::post('/admin/master-data/pasien-umum', [PasienUmumController::class, 'store'])->name('admin.master-data.pasien-umum.store');
+        Route::get('/admin/master-data/pasien-umum/create', [PasienUmumController::class, 'create'])->name('admin.master-data.pasien-umum.create');
+        Route::get('/admin/master-data/pasien-umum/{pasien}/edit', [PasienUmumController::class, 'edit'])->name('admin.master-data.pasien-umum.edit');
+        Route::put('/admin/master-data/pasien-umum/{pasien}', [PasienUmumController::class, 'update'])->name('admin.master-data.pasien-umum.update');
+        Route::delete('/admin/master-data/pasien-umum/{pasien}', [PasienUmumController::class, 'destroy'])->name('admin.master-data.pasien-umum.destroy');
+        Route::get('/admin/master-data/pasien-umum/{pasien}', [PasienUmumController::class, 'show'])->name('admin.master-data.pasien-umum.show');
+        Route::get('/admin/master-data/pasien-umum/edit/{pasien}', [PasienUmumController::class, 'edit'])->name('admin.master-data.pasien-umum.edit');
+
         Route::get('/admin/master-data/pasien', [PasienController::class, 'index'])->name('admin.master-data.pasien');
         Route::post('/admin/master-data/pasien', [PasienController::class, 'store'])->name('admin.master-data.pasien.store');
         Route::get('/admin/master-data/pasien/create', [PasienController::class, 'create'])->name('admin.master-data.pasien.create');
@@ -79,6 +89,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/admin/master-data/pasien/{pasien}', [PasienController::class, 'destroy'])->name('admin.master-data.pasien.destroy');
         Route::get('/admin/master-data/pasien/{pasien}', [PasienController::class, 'show'])->name('admin.master-data.pasien.show');
         Route::get('/admin/master-data/pasien/edit/{pasien}', [PasienController::class, 'edit'])->name('admin.master-data.pasien.edit');
+
+
 
         Route::get('/admin/master-data/posyandu', [PosyanduController::class, 'index'])->name('admin.master-data.posyandu');
         Route::post('/admin/master-data/posyandu', [PosyanduController::class, 'store'])->name('admin.master-data.posyandu.store');
@@ -124,10 +136,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/transaction/drugs-out/dokter', [DrugOutController::class, 'indexDokter'])->name('admin.transaction.drugs-out.dokter');
         Route::get('/admin/transaction/drugs-out/pasien/{term}', [DrugOutController::class, 'getPasien'])->name('admin.transaction.drugs-out.getpasien');
         Route::post('/admin/transaction/drugs-out', [DrugOutController::class, 'store'])->name('admin.transaction.drugs-out.store');
+        Route::post('/admin/transaction/drugs-out/umum', [DrugOutController::class, 'store2'])->name('admin.transaction.drugs-out.store2');
         Route::post('/admin/transaction/drugs-out/addkeranjang', [DrugOutController::class, 'addKeranjang'])->name('admin.transaction.drugs-out.addkeranjang');
         Route::get('/admin/transaction/drugs-out/keranjang/delete/{keranjang}', [DrugOutController::class, 'deleteKeranjang'])->name('admin.transaction.drugs-out.deletekeranjang');
         Route::get('/admin/transaction/drugs-out/create', [DrugOutController::class, 'create'])->name('admin.transaction.drugs-out.create')->middleware('hasDrug');
+        Route::get('/admin/transaction/drugs-out/create/umum', [DrugOutController::class, 'createUmum'])->name('admin.transaction.drugs-out.create.umum')->middleware('hasDrug');
         Route::delete('/admin/transaction/drugs-out/{obatKeluar}', [DrugOutController::class, 'destroy'])->name('admin.transaction.drugs-out.destroy');
+        Route::get('/admin/transaction/drugs-out/{obatKeluar}/cetak', [DrugOutController::class, 'cetak'])->name('admin.transaction.drugs-out.cetak');
 
         Route::get('/admin/laporan/drugs-expired', [LaporanController::class, 'obatKadaluarsa'])->name('admin.laporan.drugs-expired');
         Route::get('/admin/laporan/drugs-expired/export', [LaporanController::class, 'exportObatKadaluarsa'])->name('admin.laporan.drugs-expired.export');

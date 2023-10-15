@@ -50,12 +50,14 @@ class UserController extends Controller
             'name' => $request->name,
             'alamat' => $request->alamat,
             'no_telepon' => $request->no_telepon,
-
             'email' => $request->email
         ];
+
         if ($request->images) {
-            $image = $request->file('images')->store('images');
-            $data['image'] = $image;
+            $time = time();
+            $imagesName = $time . '.' . $request->images->extension();
+            $request->images->move(public_path('storage/images'), $imagesName);
+            $data['image'] = "images/$imagesName";
         }
 
         User::where('id', auth()->id())->update($data);
@@ -91,13 +93,10 @@ class UserController extends Controller
             'no_telepon' => $request->noTelepon ?? null,
             'last_seen' => Carbon::now()
         ]);
-
-
         $user->assignRole($request->position);
-
-
         return Redirect::to('/admin/users-management');
     }
+
     public function update(User $user, Request $request)
     {
         $request->validate([
@@ -107,7 +106,6 @@ class UserController extends Controller
             'alamat' => 'string|max:255',
             'no_telepon' => 'numeric|max:15',
         ]);
-
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -115,10 +113,7 @@ class UserController extends Controller
             'no_telepon' => $request->noTelepon ?? null,
             'last_seen' => Carbon::now()
         ]);
-
         $user->assignRole($request->position);
-
-
         return Redirect::to('/admin/users-management');
     }
 

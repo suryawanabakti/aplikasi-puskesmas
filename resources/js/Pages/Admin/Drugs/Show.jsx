@@ -3,9 +3,22 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
+import { Dropdown } from "react-bootstrap";
 import { toast } from "react-hot-toast";
+import Pagination from "react-js-pagination";
 
-export default function Show({ auth, golongan, drug }) {
+export default function Show({
+    auth,
+    golongan,
+    drug,
+    drugsIn,
+    today,
+    pageNumber = 1,
+    paginate = 5,
+    mulaiFilter,
+    term,
+    sampaiFilter,
+}) {
     console.log(drug);
     const { data, setData, post, processing, errors, reset, get } = useForm({
         nama: drug.nama,
@@ -18,6 +31,11 @@ export default function Show({ auth, golongan, drug }) {
         golongan: drug.golongan,
         kode: drug.kode,
     });
+
+    const [filterTerm, setFilterTerm] = useState("");
+    const [showAlertDelete, setShowAlertDelete] = useState(false);
+    const handleClose = () => setShowAlertDelete(false);
+    const handleSearch = () => {};
 
     const handleOnChange = (event) => {
         setData(
@@ -223,6 +241,113 @@ export default function Show({ auth, golongan, drug }) {
                                         </div>
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <b>
+                                    Daftar Obat Masuk {drug.kode} - {drug.nama}
+                                </b>
+                                <hr />
+                                <div className="table-responsive text-nowrap">
+                                    <table className="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No.Invoice</th>
+                                                <th>Tanggal Masuk</th>
+                                                <th>Jumlah</th>
+                                                <th>Sisa</th>
+                                                <th>Satuan</th>
+                                                <th>Status</th>
+                                                <th>Expired At</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="table-border-bottom-0">
+                                            {drugsIn.data.map((data, index) => {
+                                                return (
+                                                    <tr key={data.id}>
+                                                        <td>{data.invoice}</td>
+                                                        <td>
+                                                            {data.tanggal_masuk}
+                                                        </td>
+
+                                                        <td>
+                                                            {data.jumlah_masuk}
+                                                        </td>
+                                                        <td>{data.sisa}</td>
+                                                        <td>{data.golongan}</td>
+                                                        <td>
+                                                            {today >=
+                                                            data.expired_at ? (
+                                                                <span className="badge bg-danger">
+                                                                    EXPIRED
+                                                                </span>
+                                                            ) : data.kadaluarsa30HariLagi ? (
+                                                                <span className="badge bg-warning">
+                                                                    {"< "}1 BLN
+                                                                    EXPIRED
+                                                                </span>
+                                                            ) : (
+                                                                <span className="badge bg-success">
+                                                                    BELUM
+                                                                    EXPIRED
+                                                                </span>
+                                                            )}
+                                                        </td>
+                                                        <td>
+                                                            {data.expired_at}
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+
+                                    <div className="mt-3 ms-2">
+                                        <Pagination
+                                            linkClassName="page-link ms-1"
+                                            activeLinkClassName="fw-bold text-dark"
+                                            activePage={
+                                                drugsIn?.meta?.current_page
+                                                    ? drugsIn?.meta
+                                                          ?.current_page
+                                                    : 0
+                                            }
+                                            itemsCountPerPage={
+                                                drugsIn?.meta?.per_page
+                                                    ? drugsIn?.meta?.per_page
+                                                    : 0
+                                            }
+                                            totalItemsCount={
+                                                drugsIn?.meta?.total
+                                                    ? drugsIn?.meta?.total
+                                                    : 0
+                                            }
+                                            onChange={(pageNumber) => {
+                                                get(
+                                                    route(
+                                                        "admin.transaction.drugs-in",
+                                                        {
+                                                            page: pageNumber,
+                                                            paginate: paginate,
+                                                            term: term,
+                                                        }
+                                                    )
+                                                );
+                                            }}
+                                            itemClass="page-item"
+                                            linkClass="page-link"
+                                            firstPageText={"First Page"}
+                                            lastPageText={"Last Page"}
+                                        />
+                                    </div>
+
+                                    <br />
+                                    <br />
+                                    <br />
+                                </div>
                             </div>
                         </div>
                     </div>

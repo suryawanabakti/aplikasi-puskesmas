@@ -81,7 +81,7 @@
                         <td>{{ $data->invoice }}</td>
                         <td>{{ $data->tanggal_keluar }}</td>
                         <td>{{ $data->obat->nama }}</td>
-                        <td>{{ $data->pasien->nama }}</td>
+                        <td>{{ $data->pasien->nama ?? $data->nama_pasien }}</td>
                         <td>{{ $data->jumlah_keluar }}</td>
                     </tr>
                 @endforeach

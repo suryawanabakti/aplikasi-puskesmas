@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('obat')->cascadeOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->integer('obat_keluar_id')->nullable();
             $table->unsignedBigInteger('obat_id');
             $table->foreign('obat_id')->references('id')->on('obat')->cascadeOnDelete();
             $table->integer('jumlah');
+            $table->text('keterangan')->nullable();
             $table->integer('total');
             $table->timestamps();
         });

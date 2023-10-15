@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('invoice');
             $table->unsignedBigInteger('obat_id');
             $table->foreign('obat_id')->references('id')->on('obat')->cascadeOnDelete();
-            $table->unsignedBigInteger('pasien_id');
+            $table->unsignedBigInteger('pasien_id')->nullable();
             $table->foreign('pasien_id')->references('id')->on('pasien');
+            $table->string('nama_pasien')->nullable();
             $table->date('tanggal_keluar');
             $table->integer('jumlah_keluar');
             $table->integer('jumlah_bayar'); // jumlah keluar * harga jual

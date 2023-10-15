@@ -85,10 +85,11 @@ class DrugInController extends Controller
             'supplier_id' => $request->supplier,
             'tanggal_masuk' => $request->tanggalMasuk,
             'jumlah_masuk' => $request->jumlahMasuk,
+            'sisa' => $request->jumlahMasuk,
             'jumlah_bayar' => $jumlahBayar,
             'tanggal_kadaluarsa' => $request->tanggalKadaluarsa,
         ]);
 
-        return redirect()->route('admin.transaction.drugs-in');
+        return redirect()->route('admin.master-data.drugs.show', $obat->kode);
     }
 }

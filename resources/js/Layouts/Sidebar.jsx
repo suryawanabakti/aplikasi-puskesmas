@@ -139,8 +139,8 @@ export default function Sidebar({ user }) {
                     menuItems: [
                         {
                             id: "obatKeluar",
-                            routeName: "admin.transaction.drugs-out",
-                            link: "/admin/transaction/grugs-out",
+                            routeName: "admin.transaction.drugs-out.dokter",
+                            link: "/admin/transaction/drugs-out",
                             text: "Obat Keluar",
                         },
                     ],
@@ -176,18 +176,6 @@ export default function Sidebar({ user }) {
                             text: "Obat Kadaluarsa",
                         },
                     ],
-                },
-            ],
-        },
-        {
-            menuHeader: "Misc",
-            roles: ["admin", "user", "super-admin", "pimpinan"],
-            menu: [
-                {
-                    id: "support",
-                    menuTitle: "Support",
-                    icon: "bx bx-support",
-                    core: "support",
                 },
             ],
         },

@@ -6,6 +6,7 @@ import AsyncSelect from "react-select/async";
 import { toast } from "react-hot-toast";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
+import Nav from "react-bootstrap/Nav";
 
 export default function Create({ auth, drugs, pasien, keranjang }) {
     const { flash } = usePage().props;
@@ -19,10 +20,16 @@ export default function Create({ auth, drugs, pasien, keranjang }) {
         tanggalKeluar: "",
         jumlah: "",
         totalStok: totalStok,
+        keterangan: "",
+        keteranganObat: "",
     });
 
     const handleChangeJumlahKeluar = (e) => {
-        setData("jumlah", e.target.value);
+        if (stok < e.target.value) {
+            alert("harus kurang dari " + stok);
+        } else {
+            setData("jumlah", e.target.value);
+        }
         // let totalStok = parseInt(stok) - parseInt(e.target.value);
         // setTotalStok(totalStok);
     };
@@ -46,11 +53,18 @@ export default function Create({ auth, drugs, pasien, keranjang }) {
     const handleAdd = () => {
         post(route("admin.transaction.drugs-out.addkeranjang"), {
             onSuccess: (res) => {
-                toast.success("berhasil tambah");
+                if (res == "error") {
+                    toast.error(
+                        "Jumlah Obat Tidak Boleh Lebih Besar Dari Stok Obat"
+                    );
+                } else {
+                    setData("jumlah", "");
+                    setData("keteranganObat", "");
+                    toast.success("berhasil tambah");
+                }
             },
             onError: (err) => {
-                console.log(err);
-                toast.error("error tambah");
+                toast.error(Object.values(err)[0]);
             },
         });
     };
@@ -112,6 +126,27 @@ export default function Create({ auth, drugs, pasien, keranjang }) {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
+                        <Nav
+                            variant="tabs"
+                            defaultActiveKey="/admin/transaction/drugs-out/create"
+                        >
+                            <Nav.Item>
+                                <Nav.Link
+                                    as={Link}
+                                    href="/admin/transaction/drugs-out/create"
+                                >
+                                    Pasien
+                                </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link
+                                    as={Link}
+                                    href="/admin/transaction/drugs-out/create/umum"
+                                >
+                                    Umum
+                                </Nav.Link>
+                            </Nav.Item>
+                        </Nav>
                         <div className="card">
                             <h5 className="card-header">
                                 Tambah transaksi obat keluar
@@ -152,7 +187,6 @@ export default function Create({ auth, drugs, pasien, keranjang }) {
                                                 className="form-control"
                                             />
                                         </div>
-
                                         <div className="col-md-2 mb-3">
                                             <label
                                                 htmlFor=""
@@ -161,9 +195,9 @@ export default function Create({ auth, drugs, pasien, keranjang }) {
                                                 Jumlah Keluar
                                             </label>
                                             <input
-                                                name="jumlahKeluar"
-                                                id="jumlahKeluar"
-                                                value={data.jumlahKeluar}
+                                                name="jumlah"
+                                                id="jumlah"
+                                                value={data.jumlah}
                                                 onChange={
                                                     handleChangeJumlahKeluar
                                                 }
@@ -174,14 +208,37 @@ export default function Create({ auth, drugs, pasien, keranjang }) {
                                                 {errors.jumlah}
                                             </span>
                                         </div>
-                                        <div className="col-md-2 mt-4">
+                                        <div className="col-md-12 mb-3">
+                                            <label
+                                                htmlFor=""
+                                                className="form-label"
+                                            >
+                                                Keterangan
+                                            </label>
+                                            <input
+                                                type="text"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "keteranganObat",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                value={data.keteranganObat}
+                                                placeholder="Masukkan Keterangan ...."
+                                                className="form-control"
+                                            />
+                                            <span className="text-danger">
+                                                {errors.keteranganObat}
+                                            </span>
+                                        </div>
+                                        <div className="col-md-2">
                                             <button
-                                                className="btn btn-primary"
+                                                className="btn btn-primary btn-sm mb-3"
                                                 type="button"
                                                 onClick={() => handleAdd()}
                                                 disabled={processing}
                                             >
-                                                +
+                                                + Tambah Obat
                                             </button>
                                         </div>
                                         <hr />
@@ -194,6 +251,7 @@ export default function Create({ auth, drugs, pasien, keranjang }) {
                                                     <tr>
                                                         <th>Obat</th>
                                                         <th>Jumlah</th>
+                                                        <th>Keterangan</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -212,6 +270,11 @@ export default function Create({ auth, drugs, pasien, keranjang }) {
                                                                     <td>
                                                                         {
                                                                             data.jumlah
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        {
+                                                                            data.keterangan
                                                                         }
                                                                     </td>
                                                                     <td>

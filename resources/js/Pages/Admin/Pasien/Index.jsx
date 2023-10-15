@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { Dropdown, Offcanvas } from "react-bootstrap";
+import { Dropdown, Nav, Offcanvas } from "react-bootstrap";
 import { toast } from "react-hot-toast";
 import Pagination from "react-js-pagination";
 
@@ -61,7 +61,21 @@ export default function Index({
                     <span className="text-muted fw-light">Master Data / </span>
                     Pasien
                 </h4>
-
+                <Nav
+                    variant="tabs"
+                    defaultActiveKey="/admin/master-data/pasien"
+                >
+                    <Nav.Item>
+                        <Nav.Link href="/admin/master-data/pasien">
+                            Pasien
+                        </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/admin/master-data/pasien-umum">
+                            Umum
+                        </Nav.Link>
+                    </Nav.Item>
+                </Nav>
                 <div className="card">
                     <div className="card-header">
                         <div className="row">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DrugsInResource;
 use App\Http\Resources\DrugsResource;
 use App\Models\Golongan;
 use App\Models\Obat;
@@ -35,7 +36,6 @@ class DrugController extends Controller
         }
 
         return Inertia::render('Admin/Drugs/Index', [
-
             "drugs" =>  DrugsResource::collection($drugs->paginate($request->paginate ?? 5)),
             'term' => $request->term ?? null,
             'pageNumber' => $request->pageNumber ?? 1,
@@ -44,11 +44,25 @@ class DrugController extends Controller
         ]);
     }
 
-    public function show(Obat $obat)
+    public function show(Obat $obat, Request $request)
     {
+        $drugsIn = ObatMasuk::with('obat', 'obat.golongan')->where('obat_id', $obat->id)->orderBy('created_at', 'desc');
+        if ($request->term) {
+            $drugsIn->where('invoice', 'LIKE', "%{$request->term}%");
+        }
+        if ($request->mulai && $request->sampai) {
+            $drugsIn->whereBetween('tanggal_masuk', [$request->mulai, $request->sampai]);
+        }
 
         return Inertia::render('Admin/Drugs/Show', [
-            "drug" => $obat
+            "drug" => $obat,
+            "drugsIn" => DrugsInResource::collection($drugsIn->paginate($request->paginate ?? 10)),
+            'pageNumber' => $request->pageNumber ?? 1,
+            'paginate' => $request->paginate ?? 5,
+            "mulaiFilter" => $request->mulai ?? null,
+            'term' => $request->term ?? null,
+            "sampaiFilter" => $request->sampai ?? null,
+            'today' => Carbon::now()->format('Y-m-d')
         ]);
     }
 
@@ -118,6 +132,21 @@ class DrugController extends Controller
             'harga_beli' => $request->hargaBeli,
             'golongan' => $request->golongan,
             'kadaluarsa' => $request->kadaluarsa
+        ]);
+
+        $invoice = IdGenerator::generate(['table' => 'obat_masuk', 'field' => 'invoice', 'length' => 12, 'prefix' => "TRNMSK-"]);
+
+        $jumlahBayar = $obat->harga_beli * $request->jumlahMasuk;
+
+        ObatMasuk::create([
+            'invoice' => $invoice,
+            'obat_id' => $obat->id,
+            'supplier_id' => 1,
+            'tanggal_masuk' => Carbon::now()->format('Y-m-d'),
+            'jumlah_masuk' => $request->stok,
+            'sisa' => $request->stok,
+            'jumlah_bayar' => $jumlahBayar,
+            'tanggal_kadaluarsa' => $request->kadaluarsa,
         ]);
 
         return Redirect::to("/admin/master-data/drugs");

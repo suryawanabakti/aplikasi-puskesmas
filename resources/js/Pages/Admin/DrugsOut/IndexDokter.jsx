@@ -80,7 +80,21 @@ export default function Index({ auth, drugsOut }) {
 
                     <div className="card-header">
                         <div className="row">
-                            <div className="col-md-7"></div>
+                            <div className="col-md-7">
+                                <div className="row">
+                                    <div className="col-sm-4">
+                                        <Link
+                                            href={route(
+                                                "admin.transaction.drugs-out.create"
+                                            )}
+                                            className="btn btn-primary btn-sm"
+                                        >
+                                            <i class="bx bx-capsule"></i> Add
+                                            Obat Keluar
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="col-md-1"></div>
                             <div className="col-md-4">
                                 <div className="input-group input-group-merge">
@@ -113,10 +127,11 @@ export default function Index({ auth, drugsOut }) {
                                     <tr>
                                         <th>No.Invoice</th>
                                         <th>Tanggal</th>
-                                        <th>Obat</th>
+                                        <th>Daftar Obat</th>
                                         <th>Pasien</th>
                                         <th>Dokter</th>
                                         <th>Jumlah</th>
+                                        <th>Total</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -126,10 +141,53 @@ export default function Index({ auth, drugsOut }) {
                                             <tr key={index}>
                                                 <td>{data.invoice}</td>
                                                 <td>{data.tanggal_keluar}</td>
-                                                <td>{data.obat.nama}</td>
-                                                <td>{data?.pasien?.nama}</td>
+                                                <td>
+                                                    {data.keranjang.map(
+                                                        (keranjang, index2) => {
+                                                            return (
+                                                                <ul>
+                                                                    <li>
+                                                                        {index2 +
+                                                                            1}
+                                                                        .
+                                                                        {
+                                                                            keranjang
+                                                                                .obat
+                                                                                .nama
+                                                                        }
+                                                                        ,{" "}
+                                                                        {
+                                                                            keranjang.jumlah
+                                                                        }
+                                                                        ,
+                                                                        {keranjang
+                                                                            .obat
+                                                                            .harga_jual *
+                                                                            keranjang.jumlah}
+                                                                        ,
+                                                                        {
+                                                                            keranjang.keterangan
+                                                                        }
+                                                                    </li>
+                                                                </ul>
+                                                            );
+                                                        }
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {data.nama_pasien
+                                                        ? data.nama_pasien
+                                                        : data?.pasien?.nama}
+                                                </td>
+
                                                 <td>{data?.user?.name}</td>
                                                 <td>{data.jumlah_keluar}</td>
+                                                <td>
+                                                    {!data?.pasien
+                                                        ? data.jumlah_bayar
+                                                        : "-"}
+                                                </td>
+
                                                 <td>
                                                     <Dropdown>
                                                         <Dropdown.Toggle
@@ -150,6 +208,21 @@ export default function Index({ auth, drugsOut }) {
                                                             >
                                                                 <i className="bx bx-edit-alt"></i>{" "}
                                                                 Edit
+                                                            </Dropdown.Item>
+                                                            <Dropdown.Item
+                                                                href={`/admin/transaction/drugs-out/${data.id}/cetak`}
+                                                                target="_blank"
+                                                            >
+                                                                <a
+                                                                    style={{
+                                                                        textDecoration:
+                                                                            "none",
+                                                                        color: "black",
+                                                                    }}
+                                                                >
+                                                                    <i class="bx bxs-file-pdf"></i>{" "}
+                                                                    Cetak
+                                                                </a>
                                                             </Dropdown.Item>
 
                                                             <Dropdown.Item

@@ -20,6 +20,8 @@ class DrugsResource extends JsonResource
 
         !empty($obatMasuk) ? $expired30Days = $obatMasuk->tanggal_kadaluarsa <= Carbon::now()->addDay(30)->format('Y-m-d') : $expired30Days = $this->kadaluarsa <= Carbon::now()->addDay(30)->format('Y-m-d');
 
+        $stokObatMasuk =  ObatMasuk::where('tanggal_kadaluarsa', '>', Carbon::now()->format('Y-m-d'))->where('obat_id', $this->id)->sum('sisa');
+
         return [
             "value" => $this->id,
             "label" => $this->kode . " - " . $this->nama,
@@ -29,6 +31,7 @@ class DrugsResource extends JsonResource
             'nama' => $this->nama,
             'golongan' =>  ucfirst($this->golongan),
             "stok" => $this->stok,
+            "stokTidakKadaluarsa" => $stokObatMasuk,
             "expired_at" => !empty($obatMasuk) ? $obatMasuk->tanggal_kadaluarsa : $this->kadaluarsa,
             '30Terakhir' => Carbon::now()->addDay(30)->format('Y-m-d'),
             'kadaluarsa30HariLagi' => $expired30Days,

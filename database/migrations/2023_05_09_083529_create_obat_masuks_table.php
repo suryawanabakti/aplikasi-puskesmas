@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('obat_id')->references('id')->on('obat')->cascadeOnDelete();
             $table->date('tanggal_masuk');
             $table->integer('jumlah_masuk');
+            $table->integer('sisa');
             $table->bigInteger('jumlah_bayar'); // jumlah_masuk * harga_beli
             $table->text('keterangan')->nullable();
             $table->date('tanggal_kadaluarsa');
